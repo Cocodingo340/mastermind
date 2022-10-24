@@ -2,6 +2,7 @@
 public class Mastermind {
 
     public static int[] choixOrdi(){
+        // Programme qui crée un tableau et le remplit avec des chiffres au hasard allant de 0 à 3
         int[] tab=new int[4];
 
         for(int i=0;i<3;i++){
@@ -10,16 +11,8 @@ public class Mastermind {
         return tab;
     }
 
-    public static boolean estDansTab(int val, int[] tab){
-        for (int j : tab) {
-            if (val == j) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static int[] choixUtilisateur(){
+        // Programme qui demande à l'utilisateur de remplir un tableau avec des chiffres
         int[] tab=new int[4];
         Ut.afficher("Veuillez choisir une combinaison de 4 chiffres allant de 0 à 3 inclus.");
         Ut.passerLigne();
@@ -29,6 +22,16 @@ public class Mastermind {
             tab[i]=Ut.saisirEntier();
         }
         return tab;
+    }
+
+    public static boolean estDansTab(int val, int[] tab){
+        // Programme qui regarde si une valeur est dans le tableau
+        for (int j : tab) {
+            if (val == j) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void programmePrincipal(){
