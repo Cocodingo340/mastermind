@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Mastermind {
 
@@ -34,27 +35,64 @@ public class Mastermind {
         return false;
     }
 
+    public static int[] compteur(int[] tab){
+        int cpt=0;
+        int[]newtab= new int[tab.length];
+        for(int i=0; i<tab.length; i++){
+            if(tab[i]==i){
+                cpt++;
+            }
+            newtab[i]=cpt;
+
+        }
+        return newtab;
+    }
+
+    //continuer idée compteur, faire un truc avec le maximum d'un tableau
+
     public static void programmePrincipal(){
         int[] ordi=choixOrdi();
         int bienPlace=0;
         int malPlace=0;
         int pasPlace=0;
         Ut.afficher(ordi);
+        int[] autretab= new int[ordi.length];
+        int[] tabcompteur=compteur(ordi);
+        Ut.afficher(tabcompteur);
+        Ut.afficher(autretab);
         while (bienPlace!=4){
             int[] user=choixUtilisateur();
             bienPlace=0;
             malPlace=0;
             pasPlace=0;
+
             for(int i = 0; i < user.length; i++){
                 if(user[i]==ordi[i]){
-                    Ut.afficher("Nombre n°"+(i+1)+": Vrai.");
-                    Ut.passerLigne();
-                    bienPlace++;
+                    if(autretab[i]<tabcompteur[i]){
+                        Ut.afficher("Nombre n°"+(i+1)+": Vrai.");
+                        Ut.passerLigne();
+                        bienPlace++;
+                        autretab[i]++;
+                    }
+                    else {
+                        Ut.afficher("Nombre n°" + (i + 1) + ": Faux.");
+                        Ut.passerLigne();
+                        pasPlace++;
+                    }
                 }
                 else if(estDansTab(user[i], ordi)){
-                    Ut.afficher("Nombre n°"+(i+1)+": Vrai mais au mauvais endroit.");
-                    Ut.passerLigne();
-                    malPlace++;
+                    if(autretab[i]<tabcompteur[i]){
+                        Ut.afficher("Nombre n°"+(i+1)+": Vrai, mais au mauvais endroit.");
+                        Ut.passerLigne();
+                        malPlace++;
+                        autretab[i]++;
+                    }
+                    else {
+                        Ut.afficher("Nombre n°" + (i + 1) + ": Faux.");
+                        Ut.passerLigne();
+                        pasPlace++;
+                    }
+
                 }
                 else{
                     Ut.afficher("Nombre n°"+(i+1)+": Faux.");
