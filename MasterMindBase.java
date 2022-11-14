@@ -181,6 +181,13 @@ public class MasterMindBase {
 	Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne 1 (le "0" à l'indice 3)
     */
     public static int nbBienPlaces(int[] cod1,int[] cod2){
+        int cpt=0;
+        for(int i=0; i < cod1.length; i++){
+            if(cod1[i]==cod2[i]){
+                cpt++;
+            }
+        }
+        return cpt;
 
     }
 
@@ -191,6 +198,11 @@ public class MasterMindBase {
 	Par exemple, si cod = (1,0,2,0) et nbCouleurs = 6 la fonction retourne (2,1,1,0,0,0)
     */
     public static int[] tabFrequence(int[] cod, int nbCouleurs){
+        int[] tab = new int[nbCouleurs];
+        for(int i=0; i < cod.length; i++){
+            tab[cod[i]]=tab[cod[i]]+1;
+        }
+        return tab;
   
     }
 
@@ -199,9 +211,17 @@ public class MasterMindBase {
     /** pré-requis : les éléments de cod1 et cod2 sont des entiers de 0 à nbCouleurs-1
 	résultat : le nombre d'éléments communs de cod1 et cod2, indépendamment de leur position
 	Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne 3 (2 "0" et 1 "1")
-    */
+    */ // (pr yann)voir TD avec truc compliqué fait avec xavier
     public static int nbCommuns(int[] cod1,int[] cod2, int nbCouleurs){
-
+        int cpt=0;
+        for(int i=0; i < cod1.length; i++){
+            for(int j=0; j < cod1.length; j++){
+                if(cod1[i]==cod2[j]){
+                    cpt++;
+                }
+            }
+        }
+        return cpt;
     }
 
     //____________________________________________________________
@@ -255,7 +275,11 @@ public class MasterMindBase {
 	résultat : vrai ssi rep est correct, c'est-à-dire rep[0] et rep[1] sont >= 0 et leur somme est <= lgCode
     */
     public static boolean repCorrecte(int[] rep, int lgCode){
-
+        if(rep[0]+rep[1]==lgCode && rep[0] >= 0 && rep[1] >= 0 ){
+            return true
+        }
+        Ut.afficher("Ce n'est pas correct, il y a "+rep[0]+" couleurs bien placé et "+ rep[1]+" couleurs mal placé.");
+        return false;
     }
 
     //___________________________________________________________________
@@ -266,7 +290,17 @@ public class MasterMindBase {
 	résultat : les réponses du joueur humain dans un tableau à 2 entiers
     */
     public static int[] reponseHumain(int lgCode){
- 
+        Ut.afficher("Saissisez les nombres de couleur bien et mal placé.");
+        int bienp=Ut.saisirEntier();
+        int malp=Ut.saisirEntier();
+        while(bienp+malp!=lgCode){
+            Ut.afficher("Resaissisez.");
+            bienp=Ut.saisirEntier();
+            malp=Ut.saisirEntier();
+        }
+        int[] tab={bienp,malp};
+        return tab;
+
     }
 
     //___________________________________________________________________
@@ -336,7 +370,13 @@ public class MasterMindBase {
 	résultat : l'entier strictement positif saisi
     */
     public static int saisirEntierPositif(){
-	
+        Ut.afficher("Saisissez un entier positif.");
+        int rep=Ut.saisirEntier();
+        while(rep<0){
+            Ut.afficher("Il n'est pas positif, recommencez.");
+            rep=Ut.saisirEntier();
+        }
+	    return rep;
  
     }
 
@@ -348,8 +388,17 @@ public class MasterMindBase {
 	résultat : l'entier pair strictement positif saisi
     */
     public static int saisirEntierPairPositif(){
-	
+        Ut.afficher("Saisissez un entier positif et pair.");
+        int rep=Ut.saisirEntier();
+        while(rep<0 && rep%2!=0){
+            Ut.afficher("Il n'est pas positif ou il n'est pas pair, recommencez.");
+            rep=Ut.saisirEntier();
+        }
+        return rep;
+
     }
+	
+
 
     //___________________________________________________________________
     
@@ -360,6 +409,21 @@ public class MasterMindBase {
 	résultat : le tableau des initiales des noms de couleurs saisis
     */
     public static char[] saisirCouleurs(){
+        Ut.afficher("Saisissez un entier positif correspondant au nombre de couleur souhaité..");
+        int rep1=Ut.saisirEntier();
+        Ut.afficher("Saisissez maintenant les noms des couleurs avec les initiales.");
+        String rep2=Ut.saisirChaine();
+        char[] tabchar= new char[rep2.length()];
+        while(rep1!=tabchar.length){
+            Ut.afficher("Erreur : ressaisisez les noms des couleurs avec les initiales.");
+            rep2=Ut.saisirChaine();
+            tabchar= new char[rep2.length()];
+        }
+        for(int i=0; i <tabchar.length ; i++){
+            tabchar[i]=rep2.charAt(i);
+        }
+        return tabchar;
+
   
     }
 
