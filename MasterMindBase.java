@@ -83,7 +83,12 @@ public class MasterMindBase {
 	stratégie : utilise la fonction plusGrandIndice
     */
     public static boolean elemDiff(char[] t){
- 
+        for (int i=0; i< t.length; i++){
+            if (t[i] != plusGrandIndice(3,4)){
+                return true;
+            }
+        }
+        return t;
     }
     
     //______________________________________________
@@ -233,7 +238,14 @@ public class MasterMindBase {
 	et 2 mal placés (1 "0" et 1 "1")
     */
     public static int[] nbBienMalPlaces(int[] cod1,int[] cod2, int nbCouleurs){
+        for (int i=0; i< cod1.length; i++){
+            for (int i=0; i< cod2.length; i++){
+                if (cod1[i] == cod2[i]){
 
+                }
+
+            }
+        }
     }
 
     //____________________________________________________________
