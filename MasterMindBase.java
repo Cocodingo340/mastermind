@@ -1,6 +1,7 @@
 import java.util.*;
 import java.lang.*;
 
+
 public class MasterMindBase {
 
     //.........................................................................
@@ -75,6 +76,17 @@ public class MasterMindBase {
 
     }
 
+    public static boolean estPresent(int[] t, int c){
+        for(int i=0; i < t.length ; i++){
+            if (t[i]==c){
+                t[i]=-1;
+                return true;
+
+            }
+        }
+        return false;
+    }
+
     //______________________________________________
     
     /** pré-requis : aucun
@@ -83,12 +95,6 @@ public class MasterMindBase {
 	stratégie : utilise la fonction plusGrandIndice
     */
     public static boolean elemDiff(char[] t){
-        for (int i=0; i< t.length; i++){
-            if (t[i] != plusGrandIndice(3,4)){
-                return true;
-            }
-        }
-        return t;
     }
     
     //______________________________________________
@@ -186,14 +192,13 @@ public class MasterMindBase {
 	Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne 1 (le "0" à l'indice 3)
     */
     public static int nbBienPlaces(int[] cod1,int[] cod2){
-        int cpt=0;
-        for(int i=0; i < cod1.length; i++){
-            if(cod1[i]==cod2[i]){
-                cpt++;
+        int bienPlace = 0;
+        for (int i = 0; i < cod1.length; i++) {
+            if (cod1[i] == cod2[i]) {
+                bienPlace++;
             }
         }
-        return cpt;
-
+        return bienPlace;
     }
 
     //____________________________________________________________
@@ -219,14 +224,14 @@ public class MasterMindBase {
     */ // (pr yann)voir TD avec truc compliqué fait avec xavier
     public static int nbCommuns(int[] cod1,int[] cod2, int nbCouleurs){
         int cpt=0;
-        for(int i=0; i < cod1.length; i++){
-            for(int j=0; j < cod1.length; j++){
-                if(cod1[i]==cod2[j]){
+        for(int j=0; j < cod1.length; j++){
+                if (estPresent(cod1, cod2[j])) {
                     cpt++;
                 }
-            }
         }
         return cpt;
+
+
     }
 
     //____________________________________________________________
@@ -237,15 +242,23 @@ public class MasterMindBase {
 	Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne (1,2) : 1 bien placé (le "0" à l'indice 3) 
 	et 2 mal placés (1 "0" et 1 "1")
     */
-    public static int[] nbBienMalPlaces(int[] cod1,int[] cod2, int nbCouleurs){
-        for (int i=0; i< cod1.length; i++){
-            for (int i=0; i< cod2.length; i++){
-                if (cod1[i] == cod2[i]){
-
-                }
+    public static int[] nbBienMalPlaces(int[] cod1,int[] cod2, int nbCouleur) {
+        int bienPlace = 0;
+        int malPlace = 0;
+        for (int i = 0; i < cod1.length; i++) {
+            if (cod1[i] == cod2[i]) {
+                bienPlace++;
+                cod1[i]=-1;
 
             }
         }
+        for (int j = 0; j < cod1.length; j++) {
+            if (estPresent(cod1, cod2[j])) {
+                malPlace++;
+            }
+        }
+
+        return new int[]{bienPlace,malPlace};
     }
 
     //____________________________________________________________
@@ -276,8 +289,13 @@ public class MasterMindBase {
 	résultat : le code cod sous forme de mot d'après le tableau tabCouleurs
     */
     public static String entiersVersMot(int[] cod, char[] tabCouleurs){
- 
+        String mot= new String();
+        for(int i = 0; i < tabCouleurs.length; i++){
+           mot=mot+tabCouleurs[cod[i]];
+        }
+        return mot;
     }
+
 
     //___________________________________________________________________
     
@@ -288,7 +306,7 @@ public class MasterMindBase {
     */
     public static boolean repCorrecte(int[] rep, int lgCode){
         if(rep[0]+rep[1]==lgCode && rep[0] >= 0 && rep[1] >= 0 ){
-            return true
+            return true;
         }
         Ut.afficher("Ce n'est pas correct, il y a "+rep[0]+" couleurs bien placé et "+ rep[1]+" couleurs mal placé.");
         return false;
