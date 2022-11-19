@@ -1,7 +1,6 @@
 import java.util.*;
 import java.lang.*;
 
-
 public class MasterMindBase {
 
     //.........................................................................
@@ -95,6 +94,15 @@ public class MasterMindBase {
 	stratégie : utilise la fonction plusGrandIndice
     */
     public static boolean elemDiff(char[] t){
+        for (int i=0; i < t.length; i++){
+            for (int j=0; j < t.length; j++){
+                if(t[i]==t[j] && i!=j){
+                    return false;
+                }
+            }
+
+        }
+        return true;
     }
     
     //______________________________________________
@@ -128,8 +136,8 @@ public class MasterMindBase {
             tab[i]=Ut.randomMinMax(0,nbCouleurs-1);
         }
         return tab;
-	
-    }      
+
+    }
 
     //____________________________________________________________
     
@@ -169,6 +177,7 @@ public class MasterMindBase {
         }
         return tab;
     }
+
     //____________________________________________________________
     
     /** pré-requis : aucun
@@ -213,7 +222,7 @@ public class MasterMindBase {
             tab[cod[i]]=tab[cod[i]]+1;
         }
         return tab;
-  
+
     }
 
     //____________________________________________________________
@@ -221,13 +230,13 @@ public class MasterMindBase {
     /** pré-requis : les éléments de cod1 et cod2 sont des entiers de 0 à nbCouleurs-1
 	résultat : le nombre d'éléments communs de cod1 et cod2, indépendamment de leur position
 	Par exemple, si cod1 = (1,0,2,0) et cod2 = (0,1,0,0) la fonction retourne 3 (2 "0" et 1 "1")
-    */ // (pr yann)voir TD avec truc compliqué fait avec xavier
+    */
     public static int nbCommuns(int[] cod1,int[] cod2, int nbCouleurs){
         int cpt=0;
         for(int j=0; j < cod1.length; j++){
-                if (estPresent(cod1, cod2[j])) {
-                    cpt++;
-                }
+            if (estPresent(cod1, cod2[j])) {
+                cpt++;
+            }
         }
         return cpt;
 
@@ -261,6 +270,7 @@ public class MasterMindBase {
         return new int[]{bienPlace,malPlace};
     }
 
+
     //____________________________________________________________
 
     //.........................................................................
@@ -291,11 +301,10 @@ public class MasterMindBase {
     public static String entiersVersMot(int[] cod, char[] tabCouleurs){
         String mot= new String();
         for(int i = 0; i < tabCouleurs.length; i++){
-           mot=mot+tabCouleurs[cod[i]];
+            mot=mot+tabCouleurs[cod[i]];
         }
         return mot;
     }
-
 
     //___________________________________________________________________
     
@@ -334,39 +343,45 @@ public class MasterMindBase {
     }
 
     //___________________________________________________________________
-    
-    /** pré-requis : les éléments de cod1 sont des entiers de 0 à nbCouleurs-1
-	action : met dans cod1 le code qui le suit selon l'ordre lexicographique dans l'ensemble 
-	         des codes de longueur cod1.length à valeurs de 0 à nbCouleurs-1, si ce code existe 
-	résultat : vrai ssi l'action a pu être effectuée
+
+     /**CHANGE : action si le code suivant n'existe pas
+     *************************************************
+        pré-requis : les éléments de cod1 sont des entiers de 0 à nbCouleurs-1
+	action/résultat : met dans cod1 le code qui le suit selon l'ordre lexicographique (dans l'ensemble
+    des codes à valeurs  de 0 à nbCouleurs-1) et retourne vrai si ce code existe,
+     sinon met dans cod1 le code ne contenant que des "0" et retourne faux
     */
     public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs){
 
     }
 
     //___________________________________________________________________
-    
-    /** pré-requis : cod est une matrice, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length 
-                     et  nbCoups < rep.length 
-	résultat : vrai ssi cod[nbCoups] est compatible avec les nbCoups premières lignes de cod et de rep, 
-	           c'est-à-dire que si cod[nbCoups] était le code secret, les réponses aux nbCoups premières 
-	           propositions de cod seraient les nbCoups premières réponses de rep
-    */
-    public static boolean estCompat(int [][] cod, int [][] rep, int nbCoups, int nbCouleurs){
+
+     /**CHANGE : ajout du paramètre cod1 et modification des spécifications 
+     *********************************************************************  
+        pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length, 
+                    nbCoups < rep.length et les éléments de cod1 et de cod sont des entiers de 0 à nbCouleurs-1
+	résultat : vrai ssi cod1 est compatible avec les nbCoups premières lignes de cod et de rep,
+             c'est-à-dire que si cod1 était le code secret, les réponses aux nbCoups premières
+            propositions de cod seraient les nbCoups premières réponses de rep resp.
+   */
+   public static boolean estCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
  
     }
 
     //___________________________________________________________________
-    
-    /** pré-requis : cod est une matrice, rep est une matrice à 2 colonnes, 0 < nbCoups < cod.length 
-                     et nbCoups < rep.length  
-	action : met dans cod[nbCoups] le plus petit code (selon l'ordre lexicographique dans l'ensemble 
-	  des codes de longueur cod[0].length à valeurs  de 0 à nbCouleurs-1) qui est à la fois plus grand que
-	  cod[nbCoups-1] selon cet ordre et compatible avec les nbCoups premières lignes de cod et de rep,
-	  si ce code existe 
-	résultat : vrai ssi l'action a pu être effectuée
-    */
-    public static boolean passePropSuivante(int [][] cod,int [][] rep, int nbCoups, int nbCouleurs){
+
+     /**CHANGE : renommage de passePropSuivante en passeCodeSuivantLexicoCompat, 
+                 ajout du paramètre cod1 et modification des spécifications 
+     **************************************************************************      
+            pré-requis : cod est une matrice à cod1.length colonnes, rep est une matrice à 2 colonnes, 0 <= nbCoups < cod.length, 
+                    nbCoups < rep.length et les éléments de cod1 et de cod sont des entiers de 0 à nbCouleurs-1
+	    action/résultat : met dans cod1 le plus petit code (selon l'ordre lexicographique (dans l'ensemble
+    des codes à valeurs  de 0 à nbCouleurs-1) qui est à la fois plus grand que
+      cod1 selon cet ordre et compatible avec les nbCoups premières lignes de cod et rep si ce code existe,
+      sinon met dans cod1 le code ne contenant que des "0" et retourne faux
+   */
+   public static boolean passeCodeSuivantLexicoCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
   
     }
 
@@ -406,8 +421,8 @@ public class MasterMindBase {
             Ut.afficher("Il n'est pas positif, recommencez.");
             rep=Ut.saisirEntier();
         }
-	    return rep;
- 
+        return rep;
+
     }
 
     //___________________________________________________________________
@@ -427,8 +442,6 @@ public class MasterMindBase {
         return rep;
 
     }
-	
-
 
     //___________________________________________________________________
     
@@ -454,7 +467,7 @@ public class MasterMindBase {
         }
         return tabchar;
 
-  
+
     }
 
     //___________________________________________________________________
@@ -464,10 +477,12 @@ public class MasterMindBase {
     //.........................................................................
     
 
-    /** action : demande à l'utilisateur de saisir les paramètres de la partie (lgCode, tabCouleurs, 
+        /**CHANGE : ajout de : le nombre d'essais maximum doit être strictement positif
+        ******************************************************************************
+           action : demande à l'utilisateur de saisir les paramètres de la partie (lgCode, tabCouleurs, 
            nbManches, nbEssaisMax), 
 	   effectue la partie et affiche le résultat (identité du gagnant ou match nul).
-	   La longueur d'un code et le nombre de couleurs doivent être strictement positifs. 
+	   La longueur d'un code, le nombre de couleurs et le nombre d'essais maximum doivent être strictement positifs. 
 	   Le nombre de manches doit être un nombre pair strictement positif.
 	   Les initiales des noms de couleurs doivent être différentes. 
 	   Toute donnée incorrecte doit être re-saisie jusqu'à ce qu'elle soit correcte.
