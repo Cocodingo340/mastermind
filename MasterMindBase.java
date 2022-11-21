@@ -286,6 +286,20 @@ public class MasterMindBase {
             - sinon le nombre de codes proposés par le joueur humain          
     */
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax){
+        int[] resultat = codeAleat(4,6);
+        while (numManche!=nbEssaisMax){
+            int[] proposition=propositionCodeHumain(numManche,4,tabCouleurs);
+            if(repCorrecte(proposition,4)){
+                if(nbBienPlaces(resultat,proposition)==4){
+                    return numManche;
+                }
+                else{
+                    Ut.afficher(nbBienMalPlaces(resultat,proposition,6));
+                }
+            }
+            numManche++;
+        }
+        return numManche;
   
     }
 
