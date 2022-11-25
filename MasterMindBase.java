@@ -233,9 +233,11 @@ public class MasterMindBase {
     */
     public static int nbCommuns(int[] cod1,int[] cod2, int nbCouleurs){
         int cpt=0;
-        for(int j=0; j < cod1.length; j++){
-            if (estPresent(cod1, cod2[j])) {
-                cpt++;
+        for(int i=0; i < cod1.length; i++) {
+            if (tabFrequence(cod1, nbCouleurs)[i] > tabFrequence(cod2, nbCouleurs)[i]) {
+                cpt = cpt + tabFrequence(cod2, nbCouleurs)[i];
+            } else {
+                cpt = cpt + tabFrequence(cod1, nbCouleurs)[i];
             }
         }
         return cpt;
@@ -252,17 +254,19 @@ public class MasterMindBase {
 	et 2 mal placés (1 "0" et 1 "1")
     */
     public static int[] nbBienMalPlaces(int[] cod1,int[] cod2, int nbCouleur) {
+        int[] code1= copieTab(cod1);
+        int[] code2= copieTab(cod2);
         int bienPlace = 0;
         int malPlace = 0;
-        for (int i = 0; i < cod1.length; i++) {
-            if (cod1[i] == cod2[i]) {
+        for (int i = 0; i < code1.length; i++) {
+            if (code1[i] == code2[i]) {
                 bienPlace++;
-                cod1[i]=-1;
+                code1[i]=-1;
 
             }
         }
-        for (int j = 0; j < cod1.length; j++) {
-            if (estPresent(cod1, cod2[j])) {
+        for (int j = 0; j < code1.length; j++) {
+            if (estPresent(code1, code2[j])) {
                 malPlace++;
             }
         }
@@ -286,21 +290,25 @@ public class MasterMindBase {
             - sinon le nombre de codes proposés par le joueur humain          
     */
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax){
-        int[] resultat = codeAleat(4,6);
-        while (numManche!=nbEssaisMax){
-            int[] proposition=propositionCodeHumain(numManche,4,tabCouleurs);
-            if(repCorrecte(proposition,4)){
-                if(nbBienPlaces(resultat,proposition)==4){
-                    return numManche;
-                }
-                else{
-                    Ut.afficher(nbBienMalPlaces(resultat,proposition,6));
-                }
+        int manche=1;
+        int[] resultat = codeAleat(lgCode,tabCouleurs.length);
+        Ut.afficher(resultat);
+        int[] proposition=propositionCodeHumain(numManche,lgCode,tabCouleurs);
+        while (manche<=nbEssaisMax){
+
+            if(nbBienPlaces(resultat,proposition)==4){
+                return manche;
             }
-            numManche++;
+            else{
+                Ut.afficher(nbBienMalPlaces(resultat,proposition,3));
+            }
+
+            manche++;
+            proposition=propositionCodeHumain(numManche,4,tabCouleurs);
         }
-        return numManche;
-  
+        Ut.afficher("flop");
+        return manche;
+
     }
 
     //____________________________________________________________
