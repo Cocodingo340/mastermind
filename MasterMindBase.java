@@ -320,10 +320,10 @@ public class MasterMindBase {
     /** pré-requis : les éléments de cod sont des entiers de 0 à tabCouleurs.length-1
 	résultat : le code cod sous forme de mot d'après le tableau tabCouleurs
     */
-    public static String entiersVersMot(int[] cod, char[] tabCouleurs){
-        String mot= new String();
-        for(int i = 0; i < tabCouleurs.length; i++){
-            mot=mot+tabCouleurs[cod[i]];
+    public static String entiersVersMot(int[] cod, char[] tabCouleurs) {
+        String mot = new String();
+        for (int i = 0; i < cod.length; i++) {
+            mot = mot + tabCouleurs[cod[i]];
         }
         return mot;
     }
@@ -336,10 +336,14 @@ public class MasterMindBase {
 	résultat : vrai ssi rep est correct, c'est-à-dire rep[0] et rep[1] sont >= 0 et leur somme est <= lgCode
     */
     public static boolean repCorrecte(int[] rep, int lgCode){
-        if(rep[0]+rep[1]==lgCode && rep[0] >= 0 && rep[1] >= 0 ){
-            return true;
+        if (rep.length == 2) {
+            if(rep[0]+rep[1]==lgCode && rep[0] >= 0 && rep[1] >= 0 ){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
-        Ut.afficher("Ce n'est pas correct, il y a "+rep[0]+" couleurs bien placé et "+ rep[1]+" couleurs mal placé.");
         return false;
     }
 
@@ -351,13 +355,13 @@ public class MasterMindBase {
 	résultat : les réponses du joueur humain dans un tableau à 2 entiers
     */
     public static int[] reponseHumain(int lgCode){
-        Ut.afficher("Saissisez les nombres de couleur bien et mal placé.");
-        int bienp=Ut.saisirEntier();
-        int malp=Ut.saisirEntier();
+        Ut.afficherSL("Saissisez les nombres de couleur bien et mal placé.");
+        Ut.afficher("Bien placé : "); int bienp=Ut.saisirEntier();
+        Ut.afficher("Mal placé : "); int malp=Ut.saisirEntier();
         while(bienp+malp!=lgCode){
-            Ut.afficher("Resaissisez.");
-            bienp=Ut.saisirEntier();
-            malp=Ut.saisirEntier();
+            Ut.afficherSL("Resaissisez.");
+            Ut.afficher("Bien placé : "); bienp=Ut.saisirEntier();
+            Ut.afficher("Mal placé : "); malp=Ut.saisirEntier();
         }
         int[] tab={bienp,malp};
         return tab;
@@ -373,17 +377,29 @@ public class MasterMindBase {
     des codes à valeurs  de 0 à nbCouleurs-1) et retourne vrai si ce code existe,
      sinon met dans cod1 le code ne contenant que des "0" et retourne faux
     */
-    public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs){
-        for (int i=0; i < nbCouleurs; i++){
-            if (cod1[i]<= nbCouleurs-1){
-                return true;
-            }
-            else {
-                cod1[i]= cod1[0];
-            }
-        }
-        return false;
-    }
+
+     /** pas ça mais ça a cette gueule**/
+     public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs) {
+         int cpt=0;
+         for (int i = cod1.length-1; i > 0; i--) {
+             if (cod1[i] + 1 > nbCouleurs - 1) {
+                 cod1[i] = 0;
+             }
+             else {
+                 cod1[i] = +1;
+             }
+
+         }
+         for (int j = 0; j < cod1.length; j++) {
+             if(cod1[j]==0){
+                 cpt++;
+             }
+         }
+         if(cpt==cod1.length){
+             return false;
+         }
+         return true;
+     }
 
     //___________________________________________________________________
 
