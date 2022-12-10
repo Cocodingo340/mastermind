@@ -380,25 +380,23 @@ public class MasterMindBase {
 
      /** pas ça mais ça a cette gueule**/
      public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs) {
-         int cpt=0;
-         for (int i = cod1.length-1; i > 0; i--) {
-             if (cod1[i] + 1 > nbCouleurs - 1) {
-                 cod1[i] = 0;
+         int[] max= new int[]{nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1};
+         if (cod1 == max) {
+             for(int i=0; i < cod1.length; i++){
+                 cod1[i]=0;
              }
-             else {
-                 cod1[i] = +1;
-             }
-
-         }
-         for (int j = 0; j < cod1.length; j++) {
-             if(cod1[j]==0){
-                 cpt++;
-             }
-         }
-         if(cpt==cod1.length){
              return false;
          }
-         return true;
+         else{
+             for(int i=cod1.length;i>0; i--){
+                 if(cod1[i]==nbCouleurs-1){
+                     cod1[i]=0;
+                     cod1[i-1]++;
+                 }
+             }
+             return true;
+
+         }
      }
 
     //___________________________________________________________________
@@ -412,7 +410,10 @@ public class MasterMindBase {
             propositions de cod seraient les nbCoups premières réponses de rep resp.
    */
    public static boolean estCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
- 
+        if(sontEgaux(cod[nbCouleurs],nbBienMalPlaces(cod1,cod[nbCoups],nbCouleurs))){
+            return true;
+        }
+        return false;
     }
 
     //___________________________________________________________________
