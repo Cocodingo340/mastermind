@@ -381,14 +381,14 @@ public class MasterMindBase {
      /** pas ça mais ça a cette gueule**/
      public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs) {
          int[] max= new int[]{nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1};
-         if (cod1 == max) {
-             for(int i=0; i < cod1.length; i++){
+         if (!sontEgaux(cod1,max)) {
+             for(int i=0; i < cod1.length-1; i++){
                  cod1[i]=0;
              }
              return false;
          }
          else{
-             for(int i=cod1.length;i>0; i--){
+             for(int i=cod1.length-1;i>0; i--){
                  if(cod1[i]==nbCouleurs-1){
                      cod1[i]=0;
                      cod1[i-1]++;
@@ -410,10 +410,12 @@ public class MasterMindBase {
             propositions de cod seraient les nbCoups premières réponses de rep resp.
    */
    public static boolean estCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
-        if(sontEgaux(cod[nbCouleurs],nbBienMalPlaces(cod1,cod[nbCoups],nbCouleurs))){
-            return true;
-        }
-        return false;
+       for (int i=0; i < nbCoups; i++){
+           if(!Arrays.equals(rep[i], nbBienMalPlaces(cod1, cod[i], nbCouleurs))){
+               return false;
+           }
+       }
+       return true;
     }
 
     //___________________________________________________________________
@@ -429,7 +431,10 @@ public class MasterMindBase {
       sinon met dans cod1 le code ne contenant que des "0" et retourne faux
    */
    public static boolean passeCodeSuivantLexicoCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
-  
+       Ut.afficher(passeCodeSuivantLexico(cod1,nbCouleurs));
+       return true;
+
+
     }
 
     //___________________________________________________________________
@@ -446,6 +451,7 @@ public class MasterMindBase {
             - sinon le nombre de codes proposés par l'ordinateur
     */
     public static int mancheOrdinateur(int lgCode,char[] tabCouleurs, int numManche, int nbEssaisMax) {
+        return 1;
   
     }
 
@@ -535,7 +541,13 @@ public class MasterMindBase {
 	   Toute donnée incorrecte doit être re-saisie jusqu'à ce qu'elle soit correcte.
     */
     public static void main (String[] args){
-	
+        int[] cod1 = {0,0,0,1};
+        int[][] cod= {{0,0,0,0}};
+        int[][] rep= {{2,0}};
+        int nbCoups=1;
+        int nbCouleurs=3;
+        Ut.afficher(passeCodeSuivantLexico(cod1,nbCouleurs));
+
    
     } // fin main
 
