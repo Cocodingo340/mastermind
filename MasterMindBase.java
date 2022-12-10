@@ -380,23 +380,38 @@ public class MasterMindBase {
 
      /** pas ça mais ça a cette gueule**/
      public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs) {
+         Ut.afficher(cod1);
+         boolean rep=true;
          int[] max= new int[]{nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1};
-         if (!sontEgaux(cod1,max)) {
-             for(int i=0; i < cod1.length-1; i++){
+         if (Arrays.equals(cod1, max)) {
+             for(int i=0; i < cod1.length; i++){
                  cod1[i]=0;
              }
-             return false;
-         }
-         else{
-             for(int i=cod1.length-1;i>0; i--){
-                 if(cod1[i]==nbCouleurs-1){
-                     cod1[i]=0;
-                     cod1[i-1]++;
-                 }
-             }
-             return true;
+             Ut.afficher(cod1);
+             rep=false;
+             return rep;
 
          }
+         else{
+             if(rep==true) {
+                 for (int i = cod1.length-1; i > 0; i--) {
+                     if (cod1[i] == nbCouleurs-1) {
+                         cod1[i] = 0;
+                         cod1[i - 1]++;
+                         Ut.afficher(cod1);
+                         return true;
+                     }
+                     else{
+                         cod1[i]=cod1[i]+1;
+                         Ut.afficher(cod1);
+                         return true;
+                     }
+                 }
+                 Ut.afficher(cod1);
+
+             }
+         }
+         return true;
      }
 
     //___________________________________________________________________
