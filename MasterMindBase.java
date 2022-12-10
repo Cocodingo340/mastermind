@@ -380,14 +380,12 @@ public class MasterMindBase {
 
      /** pas ça mais ça a cette gueule**/
      public static boolean passeCodeSuivantLexico(int[] cod1, int  nbCouleurs) {
-         Ut.afficher(cod1);
          boolean rep=true;
          int[] max= new int[]{nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1, nbCouleurs - 1};
          if (Arrays.equals(cod1, max)) {
              for(int i=0; i < cod1.length; i++){
                  cod1[i]=0;
              }
-             Ut.afficher(cod1);
              rep=false;
              return rep;
 
@@ -398,16 +396,16 @@ public class MasterMindBase {
                      if (cod1[i] == nbCouleurs-1) {
                          cod1[i] = 0;
                          cod1[i - 1]++;
-                         Ut.afficher(cod1);
+
                          return true;
                      }
                      else{
                          cod1[i]=cod1[i]+1;
-                         Ut.afficher(cod1);
+
                          return true;
                      }
                  }
-                 Ut.afficher(cod1);
+
 
              }
          }
@@ -446,9 +444,14 @@ public class MasterMindBase {
       sinon met dans cod1 le code ne contenant que des "0" et retourne faux
    */
    public static boolean passeCodeSuivantLexicoCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
-       Ut.afficher(passeCodeSuivantLexico(cod1,nbCouleurs));
-       return true;
-
+      passeCodeSuivantLexico(cod1,nbCouleurs);
+      while(estCompat(cod1, cod, rep, nbCoups, nbCouleurs)){
+          if(!passeCodeSuivantLexico(cod1,nbCouleurs)){
+              return false;
+          }
+          passeCodeSuivantLexico(cod1,nbCouleurs);
+      }
+      return true;
 
     }
 
@@ -466,7 +469,22 @@ public class MasterMindBase {
             - sinon le nombre de codes proposés par l'ordinateur
     */
     public static int mancheOrdinateur(int lgCode,char[] tabCouleurs, int numManche, int nbEssaisMax) {
-        return 1;
+        Ut.afficher("Pensez à votre code secret de longeur :"+lgCode);
+        int[] cod1={0,0,0,0};
+        int[][] cod= new int[nbEssaisMax][];
+        int[][] rep= new int[nbEssaisMax][];
+        for(int i=0; i < nbEssaisMax ; i++){
+            Ut.afficherSL("Code proposé :"+ entiersVersMot(cod1,tabCouleurs));
+            Ut.afficherSL("Merci de renseigner le nombre de couleur bien placé et mal placé :");
+            int[] reponse =reponseHumain(lgCode);
+            if(reponse[0]==4){
+                return i;
+            }
+            cod[i]=cod1;
+            rep[i]=reponse;
+            passeCodeSuivantLexicoCompat(cod1,cod,rep,i,tabCouleurs.length);
+        }
+        return nbEssaisMax+1;
   
     }
 
@@ -556,12 +574,13 @@ public class MasterMindBase {
 	   Toute donnée incorrecte doit être re-saisie jusqu'à ce qu'elle soit correcte.
     */
     public static void main (String[] args){
-        int[] cod1 = {0,0,0,1};
-        int[][] cod= {{0,0,0,0}};
-        int[][] rep= {{2,0}};
-        int nbCoups=1;
+        int[] t1 = {0,1,1,1,1};
+        int[][] cod = {{0,0,0,0,0}, {0,1,1,1,1}};
+        int[][] rep = {{1,0},{2,1}};
+        int nbCoups=2;
         int nbCouleurs=3;
-        Ut.afficher(passeCodeSuivantLexico(cod1,nbCouleurs));
+        Ut.afficher(passeCodeSuivantLexicoCompat(t1,cod,rep,nbCoups,nbCouleurs));
+
 
    
     } // fin main
