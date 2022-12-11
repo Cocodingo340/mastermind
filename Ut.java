@@ -65,15 +65,7 @@ public class Ut {
     public static void afficherSL (boolean b) {
 	afficher(b); passerLigne();
     }
-	public static void afficher (int [] mat) {
-		for (int i = 0 ; i < mat.length ; i++) {
-			System.out.print(mat[i] + "\t");
-		}
-			sautLigne();
-	}
-	public static void afficherSL (int [] mat) {
-		afficher(mat); passerLigne();
-	}
+
     public static void afficher (int [][] mat) {
 	for (int i = 0 ; i < mat.length ; i++) {
 	    for (int j = 0 ; j < mat[i].length ; j++) {

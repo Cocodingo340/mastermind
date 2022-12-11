@@ -290,7 +290,7 @@ public class MasterMindBase {
     public static int mancheHumain(int lgCode, char[] tabCouleurs, int numManche, int nbEssaisMax){
         int manche=1;
         int[] resultat = codeAleat(lgCode,tabCouleurs.length);
-        Ut.afficher(resultat);
+        System.out.println(Arrays.toString(resultat));
         int[] proposition=propositionCodeHumain(numManche,lgCode,tabCouleurs);
         while (manche<=nbEssaisMax){
 
@@ -298,7 +298,7 @@ public class MasterMindBase {
                 return manche;
             }
             else{
-                Ut.afficher(nbBienMalPlaces(resultat,proposition,3));
+                System.out.println(Arrays.toString(nbBienMalPlaces(resultat, proposition, 3)));
             }
 
             manche++;
@@ -473,11 +473,12 @@ public class MasterMindBase {
             }
             cod[i]=cod1;
             rep[i]=reponse;
-            if (!passeCodeSuivantLexicoCompat(cod1, cod, rep, i, tabCouleurs.length)) {
-                return 0;
-            }
+
             passeCodeSuivantLexicoCompat(cod1,cod,rep,i,tabCouleurs.length);
 
+        }
+        if (!passeCodeSuivantLexicoCompat(cod1, cod, rep, nbEssaisMax, tabCouleurs.length)) {
+            return 0;
         }
         return nbEssaisMax+1;
   
