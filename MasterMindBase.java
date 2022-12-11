@@ -27,9 +27,7 @@ public class MasterMindBase {
     */
     public static int[] copieTab(int[] tab){
         int[] tab2 = new int[tab.length];
-        for(int i=0; i < tab.length ; i++){
-            tab2[i]=tab[i];
-        }
+        System.arraycopy(tab, 0, tab2, 0, tab.length);
         return tab2;
 
     }
@@ -40,7 +38,7 @@ public class MasterMindBase {
 	résultat : la liste des éléments de t entre parenthèses et séparés par des virgules
     */
     public static String listElem(char[] t){
-        String liste=new String();
+        String liste= "";
         liste="("+liste+t[0];
         for(int i=1; i < t.length ; i++){
             liste=liste+","+t[i];
@@ -321,7 +319,7 @@ public class MasterMindBase {
 	résultat : le code cod sous forme de mot d'après le tableau tabCouleurs
     */
     public static String entiersVersMot(int[] cod, char[] tabCouleurs) {
-        String mot = new String();
+        String mot = "";
         for (int i = 0; i < cod.length; i++) {
             mot = mot + tabCouleurs[cod[i]];
         }
@@ -337,12 +335,7 @@ public class MasterMindBase {
     */
     public static boolean repCorrecte(int[] rep, int lgCode){
         if (rep.length == 2) {
-            if(rep[0]+rep[1]==lgCode && rep[0] >= 0 && rep[1] >= 0 ){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return rep[0] + rep[1] == lgCode && rep[0] >= 0 && rep[1] >= 0;
         }
         return false;
     }
@@ -391,7 +384,7 @@ public class MasterMindBase {
 
          }
          else{
-             if(rep==true) {
+             if(rep) {
                  for (int i = cod1.length-1; i > 0; i--) {
                      if (cod1[i] == nbCouleurs-1) {
                          cod1[i] = 0;
@@ -445,15 +438,13 @@ public class MasterMindBase {
    */
    public static boolean passeCodeSuivantLexicoCompat(int [] cod1, int [][] cod,int [][] rep, int nbCoups, int  nbCouleurs){
       passeCodeSuivantLexico(cod1,nbCouleurs);
-      while(estCompat(cod1, cod, rep, nbCoups, nbCouleurs)){
-          if(!passeCodeSuivantLexico(cod1,nbCouleurs)){
+      while(!estCompat(cod1, cod, rep, nbCoups, nbCouleurs)){
+          if(passeCodeSuivantLexico(cod1,nbCouleurs)){
               return false;
           }
-          passeCodeSuivantLexico(cod1,nbCouleurs);
       }
       return true;
-
-    }
+   }
 
     //___________________________________________________________________
     
@@ -477,12 +468,16 @@ public class MasterMindBase {
             Ut.afficherSL("Code proposé :"+ entiersVersMot(cod1,tabCouleurs));
             Ut.afficherSL("Merci de renseigner le nombre de couleur bien placé et mal placé :");
             int[] reponse =reponseHumain(lgCode);
-            if(reponse[0]==4){
+            if(sontEgaux(reponse,new int[]{4,0})){
                 return i;
             }
             cod[i]=cod1;
             rep[i]=reponse;
+            if (!passeCodeSuivantLexicoCompat(cod1, cod, rep, i, tabCouleurs.length)) {
+                return 0;
+            }
             passeCodeSuivantLexicoCompat(cod1,cod,rep,i,tabCouleurs.length);
+
         }
         return nbEssaisMax+1;
   
@@ -574,12 +569,12 @@ public class MasterMindBase {
 	   Toute donnée incorrecte doit être re-saisie jusqu'à ce qu'elle soit correcte.
     */
     public static void main (String[] args){
-        int[] t1 = {0,1,1,1,1};
-        int[][] cod = {{0,0,0,0,0}, {0,1,1,1,1}};
-        int[][] rep = {{1,0},{2,1}};
-        int nbCoups=2;
-        int nbCouleurs=3;
-        Ut.afficher(passeCodeSuivantLexicoCompat(t1,cod,rep,nbCoups,nbCouleurs));
+        int[] t1 = {0,2,0,3};
+        int[][] cod = {{0,0,0,0}, {0,0,1,1}, {0,2,0,2}, {0,2,0,3}};
+        int[][] rep = {{2,0}, {1,1}, {3,0}, {3,0}};
+        int nbCoups=4;
+        int nbCouleurs=6;
+        Ut.afficher(mancheOrdinateur(4,new char[]{'R','V','B'},0,5));
 
 
    
