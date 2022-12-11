@@ -460,29 +460,22 @@ public class MasterMindBase {
             - sinon le nombre de codes proposés par l'ordinateur
     */
     public static int mancheOrdinateur(int lgCode,char[] tabCouleurs, int numManche, int nbEssaisMax) {
-        Ut.afficher("Pensez à votre code secret de longeur :"+lgCode);
-        int[] cod1={0,0,0,0};
-        int[][] cod= new int[nbEssaisMax][];
-        int[][] rep= new int[nbEssaisMax][];
-        for(int i=0; i < nbEssaisMax ; i++){
-            Ut.afficherSL("Code proposé :"+ entiersVersMot(cod1,tabCouleurs));
-            Ut.afficherSL("Merci de renseigner le nombre de couleur bien placé et mal placé :");
-            int[] reponse =reponseHumain(lgCode);
-            if(sontEgaux(reponse,new int[]{4,0})){
-                return i;
-            }
-            cod[i]=cod1;
-            rep[i]=reponse;
-
-            passeCodeSuivantLexicoCompat(cod1,cod,rep,i,tabCouleurs.length);
-
+        int [] cod1 = new int[lgCode];
+        int [][] rep = new int[nbEssaisMax][2];
+        int [][] cod = new int[nbEssaisMax][lgCode];
+        int nbCoups = 0;
+        while(rep[nbCoups][0] != lgCode && nbEssaisMax>nbCoups){
+            passeCodeSuivantLexicoCompat(cod1, cod, rep, nbCoups, tabCouleurs.length);
+            Ut.afficher(entiersVersMot(cod1, tabCouleurs));
+            rep[nbCoups] = reponseHumain(lgCode);
+            nbCoups ++;
+            cod[nbCoups] = cod1;
         }
-        if (!passeCodeSuivantLexicoCompat(cod1, cod, rep, nbEssaisMax, tabCouleurs.length)) {
-            return 0;
-        }
-        return nbEssaisMax+1;
-  
+        return nbCoups;
+
+
     }
+
 
     //___________________________________________________________________
 
@@ -570,13 +563,17 @@ public class MasterMindBase {
 	   Toute donnée incorrecte doit être re-saisie jusqu'à ce qu'elle soit correcte.
     */
     public static void main (String[] args){
-        int[] t1 = {0,2,0,3};
-        int[][] cod = {{0,0,0,0}, {0,0,1,1}, {0,2,0,2}, {0,2,0,3}};
-        int[][] rep = {{2,0}, {1,1}, {3,0}, {3,0}};
-        int nbCoups=4;
-        int nbCouleurs=6;
-        Ut.afficher(mancheOrdinateur(4,new char[]{'R','V','B'},0,5));
-
+        Ut.afficher("Veuillez saisir les paramètres de la partie :");
+        Ut.afficherSL("Veuillez rentrer la longueur du code :");
+        int lgCode=saisirEntierPositif();
+        Ut.afficherSL("Veuillez rentrer les initiales des couleurs (elles doivent être différentes) :");
+        char[] tabCouleurs = saisirCouleurs();
+        Ut.afficherSL("Veuillez rentrer le nombre de manches :");
+        int nbManches=saisirEntierPositif();
+        Ut.afficherSL("Veuillez rentrer le nombre de manches maximum souhaité :");
+        int nbEssaisMax=saisirEntierPositif();
+        Ut.afficherSL("Merci. La partie va commencer");
+        mancheHumain(lgCode,tabCouleurs,nbManches,nbEssaisMax);
 
    
     } // fin main
