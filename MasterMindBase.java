@@ -545,6 +545,22 @@ public class MasterMindBase {
 
     }
 
+    public static int[][] affichePlateau(int [][] cod, int [][] rep, int nbCoups, char[] tabCouleurs){
+        int[] cod1= {0,1,2,3};
+        int[] rep1= {0,0,0,0};
+        for (int i=0; i< nbCoups; i++) {
+            Ut.afficherSL("Code proposé :" + entiersVersMot(cod1, tabCouleurs));
+            Ut.afficherSL("Réponse: " + nbBienMalPlaces(cod1, rep1,4 ));
+
+
+        }
+
+
+
+        return cod;
+    }
+
+
     //___________________________________________________________________
 
     //.........................................................................
@@ -575,7 +591,9 @@ public class MasterMindBase {
         Ut.afficherSL("Merci. La partie va commencer");
         mancheHumain(lgCode,tabCouleurs,nbManches,nbEssaisMax);
 
-   
+
+
+
     } // fin main
 
     //___________________________________________________________________
